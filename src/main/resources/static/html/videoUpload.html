@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>视频上传</title>
+        <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var fileList = [];
+                var fileCatcher = document.getElementById('form_example');
+                var files = document.getElementById("files"), renderFileList;
+                var fileListDisplay = document.getElementById('file-list-display'), sendFile;
+
+                fileCatcher.addEventListener("submit", function (event) {
+                    event.preventDefault();
+                    //上传文件
+                    sendFile();
+                    document.getElementById('result_message').innerHTML = "上传成功";
+
+                });
+
+                files.addEventListener("change", function (event) {
+                    for (var i = 0; i < files.files.length; i++) {
+                        fileList.push(files.files[i]);
+                    }
+                });
+
+                sendFile = function () {
+                    var formData = new FormData();
+                    var request = new XMLHttpRequest();
+                    //循环添加到formData中
+                    fileList.forEach(function (file) {
+                        formData.append('file', file, file.name);
+                    })
+                    request.open("POST", "/batchUpload");
+                    request.send(formData);
+                }
+            })
+        </script>
+    </head>
+    <body>
+        <a href="pictureUpload.html">图片上传</a>
+        <a href="videoUpload.html">视频上传</a>
+        <a href="uploadRecord.html">上传记录</a>
+        <h1>视频上传</h1>
+        <form enctype="multipart/form-data" id="form_example">
+            <input type="file" id="files" multiple name="file" accept=".mov,.mp4" />
+            <input type="submit" value="提交"/>
+        </form>
+
+        <div id='file-list-display'></div>
+        <div id='result_message'></div>
+    </body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=9"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>照片管理系统</title>
+        <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="../css/main.css" rel="stylesheet"/>
+        <script src="../bootstrap/js/jquery-1.9.1.js"></script>
+        <script src="../bootstrap/js/bootstrap.js"></script>
+        <script src="../js/main.js"></script>
+        <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    </head>
+    <body id="bodyid">
+        <!--下面是顶部导航栏的代码-->
+        <nav class="navbar navbar-default navbar-inverse navbar-fixed-top"
+             role="navigation">
+            <div id="cjj" class="container-fluid">
+                <a class="navbar-brand" rel="external nofollow">照片管理系统</a>
+                <div class="collapse navbar-collapse" id="cjj-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#" onclick="Jump_module(this)"
+                                              rel="external nofollow">首页</a></li>
+                        <li><a onclick="Jump_module(this)" rel="external nofollow">帮助</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav" style="float: right;">
+                        <li>
+                            <div style="color:white; margin-top:16px;">欢迎您：段卓言<span id="ygxm_cjj"></span></div>
+                        </li>
+                        <li><a onclick="Jump_module(this)" rel="external nofollow"
+                               style="color: red;" class="pointer"><span id="dbsx_cjj"></span></a></li>
+                        <li><a onclick="Jump_module(this)" rel="external nofollow"
+                               style="color: red;" class="pointer">[修改密码]</a></li>
+                        <li><a onclick="Jump_module(this)" rel="external nofollow"
+                               style="color: red;" class="pointer">[退出]</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- 自适应布局-->
+        <div class="container-fluid" id="leftliebiao">
+            <div class="row">
+                <!-- 左侧导航栏-->
+                <div id="cj" class="col-sm-2 col-md-2 sidebar panel-group">
+                    <div class="panel" style="background-color: #E0DEDB">
+                        <a href="#tpsc" class="nav-header collapsed" data-toggle="collapse"
+                           style="text-decoration: none;" data-parent="#cj"> <i
+                                class="glyphicon glyphicon-usd"></i> 图片上传 <span
+                                class="pull-right glyphicon glyphicon-chevron-down"></span>
+                        </a>
+                        <ul id="tpsc" class="nav nav-list collapse secondmenu"
+                            style="height: 0px; padding-top: 10px; padding-left: 30px">
+<!--                            <li>
+                                <a onclick="Jump_module(this)">
+                                    <i class="glyphicon glyphicon-user"></i>
+                                    图片上传1
+                                </a>
+                            </li>-->
+                            <li>
+                                <a onclick="Jump_module(this)">
+                                    <i class="glyphicon glyphicon-user"></i>
+                                    图片上传
+                                </a>
+                            </li>
+                            <li>
+                                <a onclick="Jump_module(this)">
+                                    <i class="glyphicon glyphicon-user"></i>
+                                    视频上传
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <br/>
+                    <div class="panel" style="background-color: #E0DEDB">
+                        <a href="#scjl" class="nav-header collapsed" data-toggle="collapse"
+                           style="text-decoration: none;" data-parent="#cj"> <i
+                                class="glyphicon glyphicon-time"></i> 上传记录 <span
+                                class="pull-right glyphicon glyphicon-chevron-down"></span>
+                        </a>
+                        <ul id="scjl" class="nav nav-list collapse secondmenu"
+                            style="height: 0px; padding-top: 10px; padding-left: 30px">
+                            <li>
+                                <a onclick="Jump_module(this)">
+                                    <i class="glyphicon glyphicon-user"></i>
+                                    上传记录
+                                </a>
+                            </li>
+                            <li>
+                                <a onclick="Jump_module(this)">
+                                    <i class="glyphicon glyphicon-user"></i>
+                                    预留1
+                                </a>
+                            </li>
+                            <li>
+                                <a onclick="Jump_module(this)">
+                                    <i class="glyphicon glyphicon-user"></i>
+                                    预留2
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <br/>
+                    <div class="panel" style="background-color: #E0DEDB">
+                        <a href="#tpck" class="nav-header collapsed" data-toggle="collapse"
+                           style="text-decoration: none;" data-parent="#cj">
+                            <i class="glyphicon glyphicon-road"></i>
+                            图片查看
+                            <span class="pull-right glyphicon glyphicon-chevron-down"></span>
+                        </a>
+                        <ul id="tpck" class="nav nav-list collapse secondmenu"
+                            style="height: 0px; padding-top: 10px; padding-left: 30px">
+                            <li>
+                                <a onclick="Jump_module(this)">
+                                    <i class="glyphicon glyphicon-user"></i>
+                                    图片查看
+                                </a>
+                            </li>
+                            <li>
+                                <a onclick="Jump_module(this)">
+                                    <i class="glyphicon glyphicon-user"></i>
+                                    预留1
+                                </a>
+                            </li>
+                            <li>
+                                <a onclick="Jump_module(this)">
+                                    <i class="glyphicon glyphicon-user"></i>
+                                    预留2
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+                <!--右侧管理控制台-->
+                <div class="col-sm-10  col-md-10 main">
+                    <iframe id="oiframes" width="100%" height="600" src="" frameborder="0" scrolling="auto"></iframe>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

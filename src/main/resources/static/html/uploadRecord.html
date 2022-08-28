@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="../js/toastr.js"></script>
+        <script src="../js/jquery-1.7.2.min.js"></script>
+        <script>
+            $(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/getRecords",
+                    contentType: "application/json;charset=UTF-8",
+                    success: function (data) {
+                        console.log(data);
+                        $('#listId').html(data);
+                    }, error: function (data) {
+                        toastr.error("error");
+                    }
+                });
+            });
+        </script>
+        <style>
+            .one_line_div{
+                display: inline-block;
+                height: 30px;
+                text-align: center;
+            }
+            .div1_class{
+                width: 200px;
+            }
+            .div2_class{
+                width: 200px;
+            }
+            .div3_class{
+                width: 200px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <a href="pictureUpload.html">图片上传</a>
+        <a href="videoUpload.html">视频上传</a>
+        <a href="uploadRecord.html">上传记录</a>
+        <h1>上传记录</h1>
+        <div id="listId" th:fragment="article_type">
+            <div class="one_line_div div2_class"></div>
+            <div class="one_line_div div1_class">上传文件名</div>
+            <div class="one_line_div div2_class">上传人</div>
+            <div class="one_line_div div3_class">上传时间</div>
+            <div class="one_line_div div3_class">上传进度</div>
+            <div th:each="item,obj : ${recordList}">
+                <div th:text="${obj.index}+1" class="one_line_div div2_class"></div>
+                <div th:text="${item.fileName}" class="one_line_div div1_class"></div>
+                <div th:text="${item.userName}" class="one_line_div div2_class"></div>
+                <div th:text="${item.uploadTime}" class="one_line_div div3_class"></div>
+                <div class="one_line_div div3_class">100%</div>
+            </div>
+        </div>
+    </body>
+</html>
