@@ -1,1 +1,2 @@
+pkill -9 java
 nohup java -Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar /home/admin/app/target/wxservice-0.0.1-SNAPSHOT.jar   >> ./wxservice` date +%Y-%m-%d`.out 2>&1 &
