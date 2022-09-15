@@ -2,7 +2,7 @@ spring:
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://60.205.209.65:3306/gulimall-file?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://60.205.209.65:3306/wxservice?useUnicode=true&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       max-lifetime: 500000

@@ -1,8 +1,11 @@
 package com.example.wxservice.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.wxservice.dao.UserMapper;
 import com.example.wxservice.entity.MessageVo;
 import com.example.wxservice.entity.RequestVo;
+import com.example.wxservice.entity.UserDto;
 import com.example.wxservice.util.WxUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -10,6 +13,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +26,8 @@ import java.util.*;
 @RestController
 @Slf4j
 public class WeiXinController {
+    @Autowired
+    private UserMapper userMapper;
     private Map<String, String> returnMap = new HashMap<String, String>() {
         {
             put("传记", "http://60.205.209.65/zj/");
@@ -34,7 +40,15 @@ public class WeiXinController {
 
     @GetMapping("/testwx")
     public String testWx() {
-        return "testwx";
+        String fromUserName = "oqJRP6LFVz7PbPc0q3vzcwagfWQU";
+        UserDto userDto = getUserDto(fromUserName);
+        return JSONObject.toJSONString(userDto);
+    }
+
+    private UserDto getUserDto(String fromUserName) {
+        QueryWrapper<UserDto> wrapper = new QueryWrapper<>();
+        wrapper.eq("from_user_name", fromUserName);
+        return userMapper.selectOne(wrapper);
     }
 
     /**
@@ -72,15 +86,33 @@ public class WeiXinController {
         for (Element element : elements) {
             json.put(element.getName(), element.getStringValue());
         }
-        log.info("textMessage json:{}", json.toJSONString());
+        log.info("textMessage jsontextMessage json:{}", json.toJSONString());
         MessageVo messageVo = json.toJavaObject(MessageVo.class);
         String content = messageVo.getContent();
-        String answer = returnMap.get(content);
-        if (Strings.isBlank(answer)) {
-            answer = WxUtils.getAnswer(content);
+        String answer = "";
+        if (content.contains("登记") && content.contains(",") && content.length() > 10) {
+            String[] split = content.split(",");
+            UserDto userDto = new UserDto();
+            userDto.setFromUserName(messageVo.getFromUserName());
+            userDto.setName(split[1]);
+            userDto.setToUserName(messageVo.getToUserName());
+            userDto.setPhoneNumber(split[2]);
+            userMapper.insert(userDto);
+        } else {
+            answer = returnMap.get(content);
+            if (Strings.isBlank(answer)) {
+                answer = WxUtils.getAnswer(content);
+            }
         }
-        String name = userMap.get(messageVo.getFromUserName());
-        answer = name + answer;
+        UserDto userDto = getUserDto(messageVo.getFromUserName());
+
+        if (userDto == null) {
+            answer = "您还没有登记，请手动登记后再使用公众号！\n" +
+                    "登记方式是给公众号发消息，格式为：登记，姓名，手机号。" +
+                    "例如：登记，段珂，18710361423";
+        } else {
+            answer = userDto.getName() + ":您好！\n" + answer;
+        }
         String result = "<xml>\n" +
                 "  <ToUserName><![CDATA[" + messageVo.getFromUserName() + "]]></ToUserName>\n" +
                 "  <FromUserName><![CDATA[" + messageVo.getToUserName() + "]]></FromUserName>\n" +
