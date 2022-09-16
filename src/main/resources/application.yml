@@ -1,7 +1,7 @@
 spring:
   datasource:
-    username: root
-    password: root
+    username: mysql
+    password: mysql
     url: jdbc:mysql://60.205.209.65:3306/wxservice?useUnicode=true&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
