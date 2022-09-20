@@ -82,20 +82,26 @@ public class WeiXinController {
         String content = messageVo.getContent();
         String answer = "";
 
-        if (content.contains("登记") && content.contains(",") && content.length() > 10) {
-            String[] split = content.split(",");
+        UserDto userDto = getUserDto(messageVo.getFromUserName());
+        if (content.contains("登记") && content.contains("，") && content.length() > 10) {
+            String[] split = content.split("，");
             UserDto param = new UserDto();
             param.setFromUserName(messageVo.getFromUserName());
             String name = split[1];
             param.setName(name);
             param.setToUserName(messageVo.getToUserName());
             param.setPhoneNumber(split[2]);
-            userMapper.insert(param);
-            answer = name + "：您好！登记成功";
+            if (userDto == null) {
+                userMapper.insert(param);
+                answer = name + "：您好！登记成功";
+            } else {
+                param.setId(userDto.getId());
+                userMapper.updateById(param);
+                answer = name + "：您好！信息更新成功";
+            }
             return getAnswerMessage(messageVo, answer);
         }
 
-        UserDto userDto = getUserDto(messageVo.getFromUserName());
         if (userDto == null) {
             answer = "您还没有登记，请手动登记后再使用公众号！\n" +
                     "登记方式是给公众号发消息，格式为：登记，姓名，手机号。" +
