@@ -103,8 +103,8 @@ public class WeiXinController {
         }
 
         if (userDto == null) {
-            answer = "您还没有登记，请手动登记后再使用公众号！\\n</br>" +
-                    "登记方式是给公众号回复消息，格式为：登记，姓名，手机号。</br>" +
+            answer = "您还没有登记，请手动登记后再使用公众号！\n\n" +
+                    "登记方式是给公众号回复消息，格式为：登记，姓名，手机号。\r\t\n" +
                     "例如：登记，段珂，18710361423";
             return getAnswerMessage(messageVo, answer);
         }
