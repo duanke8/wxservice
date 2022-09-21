@@ -103,8 +103,8 @@ public class WeiXinController {
         }
 
         if (userDto == null) {
-            answer = "您还没有登记，请手动登记后再使用公众号！\n" +
-                    "登记方式是给公众号发消息，格式为：登记，姓名，手机号。" +
+            answer = "您还没有登记，请手动登记后再使用公众号！\\n\\n" +
+                    "登记方式是给公众号回复消息，格式为：登记，姓名，手机号。" +
                     "例如：登记，段珂，18710361423";
             return getAnswerMessage(messageVo, answer);
         }
@@ -179,4 +179,5 @@ public class WeiXinController {
             put("oYsQ75qfkZNtb4R1dfvZN1I8nz6Y", "赵鹏程，您好！\n");
         }
     };
+
 }
