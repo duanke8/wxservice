@@ -1,11 +1,8 @@
 package com.example.wxservice.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.wxservice.dao.UserMapper;
 import com.example.wxservice.entity.MessageVo;
 import com.example.wxservice.entity.RequestVo;
-import com.example.wxservice.entity.UserDto;
 import com.example.wxservice.util.WxUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -13,7 +10,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,8 +23,6 @@ import java.util.*;
 @RestController
 @Slf4j
 public class WeiXinController {
-    @Autowired
-    private UserMapper userMapper;
     private Map<String, String> returnMap = new HashMap<String, String>() {
         {
             put("传记", "http://60.205.209.65/zj/");
@@ -40,15 +35,16 @@ public class WeiXinController {
 
     @GetMapping("/testwx")
     public String testWx() {
-        String fromUserName = "oqJRP6LFVz7PbPc0q3vzcwagfWQU";
-        UserDto userDto = getUserDto(fromUserName);
-        return JSONObject.toJSONString(userDto);
+        return "testwx";
     }
 
-    private UserDto getUserDto(String fromUserName) {
-        QueryWrapper<UserDto> wrapper = new QueryWrapper<>();
-        wrapper.eq("from_user_name", fromUserName);
-        return userMapper.selectOne(wrapper);
+    @Value("${test.config2}")
+    String config;
+
+    @GetMapping("/testNacos")
+    public String testNacos() {
+        log.info(config);
+        return config;
     }
 
     /**
@@ -78,58 +74,6 @@ public class WeiXinController {
 
     @PostMapping("/")
     public String textMessage(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException {
-        MessageVo messageVo = getMessageVo(request);
-        String content = messageVo.getContent();
-        String answer = "";
-
-        UserDto userDto = getUserDto(messageVo.getFromUserName());
-        if (content.contains("登记") && content.contains("，") && content.length() > 10) {
-            String[] split = content.split("，");
-            UserDto param = new UserDto();
-            param.setFromUserName(messageVo.getFromUserName());
-            String name = split[1];
-            param.setName(name);
-            param.setToUserName(messageVo.getToUserName());
-            param.setPhoneNumber(split[2]);
-            if (userDto == null) {
-                userMapper.insert(param);
-                answer = name + "：您好！登记成功";
-            } else {
-                param.setId(userDto.getId());
-                userMapper.updateById(param);
-                answer = name + "：您好！信息更新成功";
-            }
-            return getAnswerMessage(messageVo, answer);
-        }
-
-        if (userDto == null) {
-            answer = "您还没有登记，请手动登记后再使用公众号！\r\n" +
-                    "登记方式是给公众号回复消息，格式为：登记，姓名，手机号。\r\r\n" +
-                    "例如：登记，段珂，18710361423";
-            return getAnswerMessage(messageVo, answer);
-        }
-        answer = returnMap.get(content);
-        if (Strings.isBlank(answer)) {
-            answer = WxUtils.getAnswer(content);
-        }
-        answer = userDto.getName() + ":您好！\n" + answer;
-        return getAnswerMessage(messageVo, answer);
-    }
-
-    private String getAnswerMessage(MessageVo messageVo, String answer) {
-        String result = "<xml>\n" +
-                "  <ToUserName><![CDATA[" + messageVo.getFromUserName() + "]]></ToUserName>\n" +
-                "  <FromUserName><![CDATA[" + messageVo.getToUserName() + "]]></FromUserName>\n" +
-                "  <CreateTime>" + System.currentTimeMillis() / 1000 + "</CreateTime>\n" +
-                "  <MsgType><![CDATA[text]]></MsgType>\n" +
-                "  <Content><![CDATA[" + answer + "]]></Content>\n" +
-                "</xml>";
-        result = result.replace(" ", "").replace("\n", "");
-        log.info("返回消息内容：textMessage result:{}", result);
-        return result;
-    }
-
-    private MessageVo getMessageVo(HttpServletRequest request) throws DocumentException, IOException {
         SAXReader saxReader = new SAXReader();
         Document read = saxReader.read(request.getInputStream());
         Element rootElement = read.getRootElement();
@@ -138,8 +82,43 @@ public class WeiXinController {
         for (Element element : elements) {
             json.put(element.getName(), element.getStringValue());
         }
-        log.info("接收到的消息：textMessage jsontextMessage json:{}", json.toJSONString());
-        return json.toJavaObject(MessageVo.class);
+        log.info("textMessage json:{}", json.toJSONString());
+        MessageVo messageVo = json.toJavaObject(MessageVo.class);
+        String content = messageVo.getContent();
+        String answer = returnMap.get(content);
+        if (Strings.isBlank(answer)) {
+            answer = WxUtils.getAnswer(content);
+        }
+        String name = userMap.get(messageVo.getFromUserName());
+        answer = name + answer;
+        String result = "<xml>\n" +
+                "  <ToUserName><![CDATA[" + messageVo.getFromUserName() + "]]></ToUserName>\n" +
+                "  <FromUserName><![CDATA[" + messageVo.getToUserName() + "]]></FromUserName>\n" +
+                "  <CreateTime>" + System.currentTimeMillis() / 1000 + "</CreateTime>\n" +
+                "  <MsgType><![CDATA[text]]></MsgType>\n" +
+                "  <Content><![CDATA[" + answer + "]]></Content>\n" +
+                "</xml>";
+
+        result="<xml>\n" +
+                "  <ToUserName><![CDATA[" + messageVo.getFromUserName() + "]]></ToUserName>\n" +
+                "  <FromUserName><![CDATA[" + messageVo.getToUserName() + "]]></FromUserName>\n" +
+                "  <CreateTime>" + System.currentTimeMillis() / 1000 + "</CreateTime>\n" +
+                "  <MsgType><![CDATA[news]]></MsgType>\n" +
+                "  <ArticleCount>1</ArticleCount>\n" +
+                "  <Articles>\n" +
+                "    <item>\n" +
+                "      <Title><![CDATA[感谢支持]]></Title>\n" +
+                "      <Description><![CDATA[订单已生成]]></Description>\n" +
+                "      <PicUrl><![CDATA[http://60.205.209.65/222.png]]></PicUrl>\n" +
+                "      <Url><![CDATA[https://www.baidu.com/]]></Url>\n" +
+                "    </item>\n" +
+                "  </Articles>\n" +
+                "</xml>";
+        result = result.replace(" ", "").replace("\n", "");
+        log.info("textMessage result:{}", result);
+
+
+        return result;
     }
 
     /**
@@ -179,5 +158,4 @@ public class WeiXinController {
             put("oYsQ75qfkZNtb4R1dfvZN1I8nz6Y", "赵鹏程，您好！\n");
         }
     };
-
 }
