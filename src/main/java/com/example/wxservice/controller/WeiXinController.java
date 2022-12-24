@@ -1,8 +1,11 @@
 package com.example.wxservice.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.wxservice.dto.OrderDto;
 import com.example.wxservice.entity.MessageVo;
 import com.example.wxservice.entity.RequestVo;
+import com.example.wxservice.service.OrderService;
+import com.example.wxservice.util.OrderUtil;
 import com.example.wxservice.util.WxUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -10,6 +13,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,11 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 @RestController
 @Slf4j
 public class WeiXinController {
+    @Autowired
+    private OrderService orderService;
+
     private Map<String, String> returnMap = new HashMap<String, String>() {
         {
             put("传记", "http://60.205.209.65/zj/");
@@ -74,21 +82,17 @@ public class WeiXinController {
         log.info("textMessage json:{}", json.toJSONString());
         MessageVo messageVo = json.toJavaObject(MessageVo.class);
         String content = messageVo.getContent();
-        String answer = returnMap.get(content);
-        if (Strings.isBlank(answer)) {
-            answer = WxUtils.getAnswer(content);
-        }
-        String name = userMap.get(messageVo.getFromUserName());
-        answer = name + answer;
-        String result = "<xml>\n" +
-                "  <ToUserName><![CDATA[" + messageVo.getFromUserName() + "]]></ToUserName>\n" +
-                "  <FromUserName><![CDATA[" + messageVo.getToUserName() + "]]></FromUserName>\n" +
-                "  <CreateTime>" + System.currentTimeMillis() / 1000 + "</CreateTime>\n" +
-                "  <MsgType><![CDATA[text]]></MsgType>\n" +
-                "  <Content><![CDATA[" + answer + "]]></Content>\n" +
-                "</xml>";
+//        oldProcess(messageVo, content);
 
-        result = "<xml>\n" +
+        OrderDto orderDto = new OrderDto();
+        orderDto.setOrderId(OrderUtil.getUUID());
+        orderDto.setOrderInfo(content);
+        orderDto.setCreateUserId(messageVo.getFromUserName());
+        orderService.save(orderDto);
+
+        String orderUrl = "http://60.205.209.65/#/order/OrderDetial?orderId=" + orderDto.getOrderId();
+
+        String result = "<xml>\n" +
                 "  <ToUserName><![CDATA[" + messageVo.getFromUserName() + "]]></ToUserName>\n" +
                 "  <FromUserName><![CDATA[" + messageVo.getToUserName() + "]]></FromUserName>\n" +
                 "  <CreateTime>" + System.currentTimeMillis() / 1000 + "</CreateTime>\n" +
@@ -97,9 +101,9 @@ public class WeiXinController {
                 "  <Articles>\n" +
                 "    <item>\n" +
                 "      <Title><![CDATA[感谢支持，订单已生成，后续查询物流请点击此链接查看]]></Title>\n" +
-                "      <Description><![CDATA[订单详情："+content+"]]></Description>\n" +
+                "      <Description><![CDATA[订单详情：" + content + "]]></Description>\n" +
                 "      <PicUrl><![CDATA[http://60.205.209.65/222.png]]></PicUrl>\n" +
-                "      <Url><![CDATA[https://www.baidu.com/]]></Url>\n" +
+                "      <Url><![CDATA[" + orderUrl + "/]]></Url>\n" +
                 "    </item>\n" +
                 "  </Articles>\n" +
                 "</xml>";
@@ -109,6 +113,7 @@ public class WeiXinController {
 
         return result;
     }
+
 
     /**
      * 创建菜单
@@ -147,4 +152,20 @@ public class WeiXinController {
             put("oYsQ75qfkZNtb4R1dfvZN1I8nz6Y", "赵鹏程，您好！\n");
         }
     };
+
+    private void oldProcess(MessageVo messageVo, String content) throws UnsupportedEncodingException {
+        String answer = returnMap.get(content);
+        if (Strings.isBlank(answer)) {
+            answer = WxUtils.getAnswer(content);
+        }
+        String name = userMap.get(messageVo.getFromUserName());
+        answer = name + answer;
+        String result = "<xml>\n" +
+                "  <ToUserName><![CDATA[" + messageVo.getFromUserName() + "]]></ToUserName>\n" +
+                "  <FromUserName><![CDATA[" + messageVo.getToUserName() + "]]></FromUserName>\n" +
+                "  <CreateTime>" + System.currentTimeMillis() / 1000 + "</CreateTime>\n" +
+                "  <MsgType><![CDATA[text]]></MsgType>\n" +
+                "  <Content><![CDATA[" + answer + "]]></Content>\n" +
+                "</xml>";
+    }
 }

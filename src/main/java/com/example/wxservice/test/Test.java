@@ -45,6 +45,7 @@ public class Test {
         topButton.setButton(levelOneList);
 
         String access_token = WxUtils.getStringToken();
+        System.out.println(access_token);
         String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + access_token;
         String result = HttpRequest.sendPost(url, JSONObject.toJSONString(topButton));
         System.out.println(result);
