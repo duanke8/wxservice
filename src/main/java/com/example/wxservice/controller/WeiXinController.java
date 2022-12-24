@@ -96,8 +96,8 @@ public class WeiXinController {
                 "  <ArticleCount>1</ArticleCount>\n" +
                 "  <Articles>\n" +
                 "    <item>\n" +
-                "      <Title><![CDATA[感谢支持]]></Title>\n" +
-                "      <Description><![CDATA[订单已生成]]></Description>\n" +
+                "      <Title><![CDATA[感谢支持，订单已生成，后续查询物流请点击此链接查看]]></Title>\n" +
+                "      <Description><![CDATA[订单详情："+content+"]]></Description>\n" +
                 "      <PicUrl><![CDATA[http://60.205.209.65/222.png]]></PicUrl>\n" +
                 "      <Url><![CDATA[https://www.baidu.com/]]></Url>\n" +
                 "    </item>\n" +
