@@ -12,7 +12,7 @@ import java.util.Date;
 public class OrderDto {
 
     @TableId(type = IdType.AUTO)
-    private long id;
+    private Long id;
     private String orderId;
     private String orderInfo;
     private String orderImages;

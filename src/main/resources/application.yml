@@ -22,3 +22,6 @@ spring:
       enabled: false
 img:
   path: /mydata/nginx/html/image/
+logging:
+  level:
+    com.example.wxservice.mapper: DEBUG
