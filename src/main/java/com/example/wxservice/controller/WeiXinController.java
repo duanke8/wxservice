@@ -90,7 +90,7 @@ public class WeiXinController {
         orderDto.setCreateUserId(messageVo.getFromUserName());
         orderService.save(orderDto);
 
-        String orderUrl = "http://60.205.209.65/#/order/OrderDetial?orderId=" + orderDto.getOrderId();
+        String orderUrl = "http://60.205.209.65/#/order/orderDetial/" + orderDto.getOrderId();
 
         String result = "<xml>\n" +
                 "  <ToUserName><![CDATA[" + messageVo.getFromUserName() + "]]></ToUserName>\n" +
