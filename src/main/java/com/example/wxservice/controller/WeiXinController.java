@@ -10,7 +10,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,19 +31,9 @@ public class WeiXinController {
         }
     };
 
-
     @GetMapping("/testwx")
     public String testWx() {
         return "testwx";
-    }
-
-    @Value("${test.config2}")
-    String config;
-
-    @GetMapping("/testNacos")
-    public String testNacos() {
-        log.info(config);
-        return config;
     }
 
     /**
@@ -99,7 +88,7 @@ public class WeiXinController {
                 "  <Content><![CDATA[" + answer + "]]></Content>\n" +
                 "</xml>";
 
-        result="<xml>\n" +
+        result = "<xml>\n" +
                 "  <ToUserName><![CDATA[" + messageVo.getFromUserName() + "]]></ToUserName>\n" +
                 "  <FromUserName><![CDATA[" + messageVo.getToUserName() + "]]></FromUserName>\n" +
                 "  <CreateTime>" + System.currentTimeMillis() / 1000 + "</CreateTime>\n" +
