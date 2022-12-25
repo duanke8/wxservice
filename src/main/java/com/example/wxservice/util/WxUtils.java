@@ -1,7 +1,7 @@
 package com.example.wxservice.util;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.wxservice.entity.Token;
+import com.example.wxservice.vo.Token;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

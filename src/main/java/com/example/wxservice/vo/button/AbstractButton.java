@@ -1,6 +1,5 @@
-package com.example.wxservice.entity.button;
+package com.example.wxservice.vo.button;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -1,10 +1,10 @@
 package com.example.wxservice.test;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.wxservice.entity.button.AbstractButton;
-import com.example.wxservice.entity.button.ClickButton;
-import com.example.wxservice.entity.button.TopButton;
-import com.example.wxservice.entity.button.ViewButton;
+import com.example.wxservice.vo.button.AbstractButton;
+import com.example.wxservice.vo.button.ClickButton;
+import com.example.wxservice.vo.button.TopButton;
+import com.example.wxservice.vo.button.ViewButton;
 import com.example.wxservice.util.HttpRequest;
 import com.example.wxservice.util.WxUtils;
 import lombok.extern.slf4j.Slf4j;

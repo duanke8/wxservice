@@ -2,8 +2,8 @@ package com.example.wxservice.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.wxservice.dto.OrderDto;
-import com.example.wxservice.entity.MessageVo;
-import com.example.wxservice.entity.RequestVo;
+import com.example.wxservice.vo.MessageVo;
+import com.example.wxservice.vo.RequestVo;
 import com.example.wxservice.service.OrderService;
 import com.example.wxservice.util.OrderUtil;
 import com.example.wxservice.util.WxUtils;

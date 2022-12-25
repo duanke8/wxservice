@@ -1,4 +1,4 @@
-package com.example.wxservice.entity;
+package com.example.wxservice.vo;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;

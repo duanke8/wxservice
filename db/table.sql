@@ -12,14 +12,17 @@ CREATE TABLE USER (
 ) ENGINE = INNODB DEFAULT CHARSET = utf8 ;
 
 DROP TABLE IF EXISTS `order_info`;
-CREATE TABLE `order_info` (
-                              `id` int(11) NOT NULL AUTO_INCREMENT,
-                              `order_id` varchar(100) DEFAULT NULL,
-                              `order_info` longtext,
-                              `order_images` longtext,
-                              `create_time` datetime DEFAULT  CURRENT_TIMESTAMP,
-                              `update_time` datetime DEFAULT  CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                              `create_user_id` varchar(100) DEFAULT NULL,
-                              PRIMARY KEY (`id`),
-                              UNIQUE KEY `order_id_index` (`order_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `order_info`
+(
+    `id`              INT (11) NOT NULL AUTO_INCREMENT,
+    `order_id`        VARCHAR(100) DEFAULT NULL,
+    `order_info`      LONGTEXT,
+    `order_images`    LONGTEXT,
+    `create_time`     datetime     DEFAULT CURRENT_TIMESTAMP,
+    `update_time`     datetime     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `create_user_id`  VARCHAR(100) DEFAULT NULL,
+    `tracking_number` VARCHAR(30)  DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `order_id_index` (`order_id`) USING BTREE
+) ENGINE = INNODB DEFAULT CHARSET = utf8;

@@ -1,4 +1,4 @@
-package com.example.wxservice.dto;
+package com.example.wxservice.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -9,19 +9,16 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName("order_info")
-public class OrderDto {
+public class OrderVo {
 
-    @TableId(type = IdType.AUTO)
     private Long id;
     private String orderId;
     private String orderInfo;
     private String orderImages;
-    private Date createTime;
-    private Date updateTime;
+    private String createTime;
+    private String updateTime;
     private String createUserId;
     private String trackingNumber;
-    @TableField(exist = false)
     private String trackingDetial;
 
 
