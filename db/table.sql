@@ -26,3 +26,29 @@ CREATE TABLE `order_info`
     PRIMARY KEY (`id`),
     UNIQUE KEY `order_id_index` (`order_id`) USING BTREE
 ) ENGINE = INNODB DEFAULT CHARSET = utf8;
+
+
+CREATE TABLE `file_info`
+(
+    `id`             INT (11) NOT NULL AUTO_INCREMENT,
+    `file_name`      VARCHAR(100) DEFAULT NULL,
+    `file_path`      VARCHAR(400) DEFAULT NULL,
+    `name`           VARCHAR(100) DEFAULT NULL,
+    `url`            VARCHAR(400) DEFAULT NULL,
+    `create_time`    datetime     DEFAULT CURRENT_TIMESTAMP,
+    `update_time`    datetime     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `create_user_id` VARCHAR(100) DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = INNODB DEFAULT CHARSET = utf8;
+
+CREATE TABLE `icc_info` (
+    `id` INT (11) NOT NULL AUTO_INCREMENT,
+    `functionStr` VARCHAR (100) DEFAULT NULL COMMENT '功能',
+    `command` VARCHAR (400) DEFAULT NULL COMMENT '命令',
+    `remarks` VARCHAR (100) DEFAULT NULL COMMENT '备注',
+    `type` VARCHAR (10) DEFAULT NULL COMMENT 'icc/8900',
+    `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+    `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `create_user_id` VARCHAR (100) DEFAULT NULL,
+PRIMARY KEY (`id`)
+) ENGINE = INNODB DEFAULT CHARSET = utf8;

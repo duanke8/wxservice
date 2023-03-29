@@ -37,7 +37,7 @@ public class Test {
         levelTwoDZYList.add(new ViewButton("上传图片","http://60.205.209.65:8870/html/commonUpload.html?bs=dzy"));
 
         List<AbstractButton> levelOneList = new ArrayList<>();
-        levelOneList.add(new ClickButton("段珂", levelTwoDKList));
+        levelOneList.add(new ViewButton("订单列表", "http://60.205.209.65/#/order/orderList"));
         levelOneList.add(new ClickButton("任霞", levelTwoRXList));
         levelOneList.add(new ClickButton("段卓言", levelTwoDZYList));
 
