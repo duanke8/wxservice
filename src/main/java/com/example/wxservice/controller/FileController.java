@@ -55,6 +55,7 @@ public class FileController {
 
     @PostMapping("/upload")
     public R uploadFile(@RequestParam("file") MultipartFile file) {
+        log.info("uploadFile getName:{}",file.getName());
         if (file.isEmpty()) {
             return R.error("文件为空");
         }
@@ -76,6 +77,7 @@ public class FileController {
             dest.getParentFile().mkdirs();
         }
         try {
+            log.info("uploadFile file.transferTo:{}");
             file.transferTo(dest);
         } catch (Exception e) {
             e.printStackTrace();
