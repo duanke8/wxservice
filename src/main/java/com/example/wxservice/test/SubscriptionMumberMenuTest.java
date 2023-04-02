@@ -13,13 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 订阅号菜单
+ *
  * @program: wxservice
  * @description:
  * @author: 段珂 dwx922021
  * @create: 2021-11-20 19:38
  **/
 @Slf4j
-public class Test {
+public class SubscriptionMumberMenuTest {
     public static void main(String[] args) {
         // 段珂
         List<AbstractButton> levelTwoDKList = new ArrayList<>();
