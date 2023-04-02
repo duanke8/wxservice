@@ -115,8 +115,10 @@ public class FileController {
         }
 
         try {
-            log.info("uploadFile file.transferTo:{}");
-            sftpUtil.upload(tagFilePath, fileName, file.getInputStream());
+            log.info("uploadFile sftpUtil.upload:{}");
+            sftpUtil.login();
+            sftpUtil.upload(uploadSftpPath, fileName, file.getInputStream());
+            sftpUtil.logout();
         } catch (Exception e) {
             e.printStackTrace();
             return R.error(fileName + "上传失败");
@@ -131,6 +133,7 @@ public class FileController {
         FileDto fileDto = fileService.getById(id);
         sftpUtil.login();
         byte[] fileData = sftpUtil.download(uploadSftpPath,fileDto.getFileName());
+        sftpUtil.logout();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);

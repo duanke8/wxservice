@@ -219,8 +219,8 @@ public class SFTPUtil {
 
     //上传文件测试
     public static void main(String[] args) throws Exception {
-//        testUpload();
-        testDownload();
+        testUpload();
+//        testDownload();
     }
 
     private static void testDownload() throws SftpException, IOException {
