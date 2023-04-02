@@ -20,4 +20,5 @@ public class FileDto {
     private Date createTime;
     private Date updateTime;
     private String createUserId;
+    private String description;
 }

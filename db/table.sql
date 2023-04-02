@@ -38,6 +38,7 @@ CREATE TABLE `file_info`
     `create_time`    datetime     DEFAULT CURRENT_TIMESTAMP,
     `update_time`    datetime     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `create_user_id` VARCHAR(100) DEFAULT NULL,
+    `description` VARCHAR(200) DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = INNODB DEFAULT CHARSET = utf8;
 
